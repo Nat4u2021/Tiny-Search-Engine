@@ -1,0 +1,35 @@
+#!/bin/bash
+VERSION=1.0
+ARCH=x86_64
+
+# check arguments
+if [ $# -lt 1 ]; then
+    echo "usage: valgrind.test <test> <arg1> ... <argn>"
+    exit 1
+fi
+
+# run testfile with valgrind
+f="${1}"
+shift
+
+if [ ! -x "${f}" ] ; then
+    echo -e "\033[91mFailed\033[0m   :${f} cannot be executed"
+    exit 1
+fi
+
+bash valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=1 ${f} "${@}" 2>&1 | tee valgrind.log
+status=$?
+grep "no leaks" valgrind.log > /dev/null
+leaks=$?
+grep "0 errors" valgrind.log > /dev/null
+errors=$?
+if [ ${status} -ne 0 ] || [ ${leaks} -ne 0 ] || [ ${errors} -ne 0 ]; then
+    echo -e "\033[91mFailed\033[0m   : valgrind found errors or memory leaks running ${f}"
+    exit 1
+else
+    echo -e "Success: ${f} ran without any errors or leaks"
+fi  
+
+rm "valgrind.log"
+
+exit 0

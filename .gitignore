@@ -1,0 +1,27 @@
+# object files and libraries
+*.o
+crawler
+indexer
+query
+pageio_test
+indexio_test
+test_indexcp
+lqueue_test
+lhash_test
+
+# save files
+*~
+\#*\#
+.\#*
+
+# debugging symbols
+*.dSYM
+
+# local backups
+.backup
+
+# log files
+*.log
+
+# internal dir
+/pages
