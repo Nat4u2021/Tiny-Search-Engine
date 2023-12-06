@@ -1,7 +1,5 @@
 # object files and libraries
 *.o
-crawler
-indexer
 query
 pageio_test
 indexio_test
